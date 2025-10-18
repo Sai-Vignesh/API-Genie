@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Query
+from fastapi import APIRouter
 from typing import Optional
 import os, psycopg2
 
@@ -6,12 +6,16 @@ router = APIRouter()
 
 def get_conn():
     return psycopg2.connect(
-        dbname=os.getenv("POSTGRES_DB"),
-        user=os.getenv("POSTGRES_USER"),
-        password=os.getenv("POSTGRES_PASSWORD"),
-        host=os.getenv("POSTGRES_HOST","postgres"),
-        port=os.getenv("POSTGRES_PORT","5432"),
+        dbname=os.getenv("POSTGRES_DB", "api_genie"),
+        user=os.getenv("POSTGRES_USER", "api_genie"),
+        password=os.getenv("POSTGRES_PASSWORD", "api_genie_pw"),
+        host=os.getenv("POSTGRES_HOST", "postgres"),
+        port=os.getenv("POSTGRES_PORT", "5432"),
     )
+
+@router.get("/ping")
+def ping():
+    return {"ok": True, "where": "catalog"}
 
 @router.get("/search")
 def search(
