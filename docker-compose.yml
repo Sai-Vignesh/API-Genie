@@ -13,7 +13,6 @@ services:
     volumes:
       - pg_data:/var/lib/postgresql/data
       - ./db/init:/docker-entrypoint-initdb.d
-
   backend:
     build: ./backend
     container_name: api_genie_backend
@@ -21,6 +20,11 @@ services:
     env_file: ./.env
     environment:
       DATABASE_URL: postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: ${POSTGRES_USER:-api_genie}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-api_genie_pw}
+      POSTGRES_DB: ${POSTGRES_DB:-api_genie}
     depends_on:
       - postgres
     ports:
