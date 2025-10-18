@@ -98,3 +98,7 @@ CREATE TABLE IF NOT EXISTS api_catalog.api_tag (
 INSERT INTO application_metadata.database_schema (version_number)
 VALUES (1)
 ON CONFLICT DO NOTHING;
+
+-- Ensure uniqueness per category
+CREATE UNIQUE INDEX IF NOT EXISTS api_api_name_category_id_uq
+ON api_catalog.api (api_name, category_id);
