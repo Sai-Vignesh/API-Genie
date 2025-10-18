@@ -1,0 +1,14 @@
+[project]
+name = "api-genie-backend"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi",
+  "uvicorn[standard]",
+  "psycopg2-binary",
+  "SQLAlchemy>=2.0",
+  "pydantic",
+  "pgvector==0.2.5",
+  "httpx",
+  "python-dotenv"
+]
