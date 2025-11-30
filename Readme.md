@@ -7,14 +7,13 @@
 
 API Genie is a full-stack project built with **FastAPI**, **PostgreSQL**, and a **React + Vite** frontend.  
 It automatically ingests and structures thousands of entries from the [public-apis](https://github.com/public-apis/public-apis) repository into a searchable database.  
-The goal is to make it easy to explore, query, and manage APIs through a clean UI and (future) AI-powered natural-language search.
+The project now features an **AI-powered Agent** that translates natural language queries into SQL to find the perfect API for your needs.
 
 ---
 
 ## 🧩 Architecture
 
 ```
-
 api-genie/
 ├─ docker-compose.yml         # orchestrates Postgres, backend, and frontend
 ├─ .env.example               # template for environment variables
@@ -23,9 +22,9 @@ api-genie/
 ├─ backend/
 │  ├─ app/
 │  │  ├─ main.py              # FastAPI entrypoint + CORS
-│  │  ├─ routers/catalog.py   # /catalog routes (ping, search, etc.)
+│  │  ├─ routers/query.py     # /query route for Agent
 │  │  ├─ models.py, deps.py   # models and helpers
-│  │  └─ services/            # nl2sql, recommendations (future)
+│  │  └─ services/            # nl2sql service (Gemini)
 │  ├─ pyproject.toml          # backend dependencies
 │  └─ README.md
 ├─ ingestion/
@@ -35,11 +34,11 @@ api-genie/
 └─ frontend/
 ├─ src/
 │  ├─ main.tsx, App.tsx    # React/Vite entry + UI logic
+│  ├─ App.css              # Modern dark theme styles
 │  └─ components/          # Chat, ResultsTable, etc.
 ├─ vite.config.ts
 └─ package.json
-
-````
+```
 
 ---
 
@@ -49,6 +48,7 @@ api-genie/
 - Docker + Docker Compose  
 - Node 18+ (for local frontend dev)  
 - Python 3.11+ (for ingestion script)
+- **Gemini API Key** (for Agent functionality)
 
 ---
 
@@ -62,7 +62,8 @@ POSTGRES_PASSWORD=api_genie_pw
 POSTGRES_DB=api_genie
 POSTGRES_HOST=postgres
 POSTGRES_PORT=5432
-````
+GEMINI_API_KEY=your_gemini_api_key_here
+```
 
 The frontend uses its own env file (`frontend/.env`):
 
@@ -113,37 +114,36 @@ This loads ~1.4 K APIs from the public-apis README into PostgreSQL.
 curl http://localhost:8000/health
 ```
 
-**Sample search:**
+**Agent Query:**
 
 ```bash
-curl 'http://localhost:8000/catalog/search?q=weather&https=true'
+curl -X POST http://localhost:8000/query \
+  -H "Content-Type: application/json" \
+  -d '{"query": "Show me free weather APIs"}'
 ```
 
 **Frontend:**
-Open [http://localhost:5173](http://localhost:5173) in your browser
-→ search “weather”, “blockchain”, etc.
+Open [http://localhost:5173](http://localhost:5173) in your browser.
+You will see a modern, dark-themed UI. Type "Show me free weather APIs" and click "Ask Agent".
 
 ---
 
 ## 🧠 Features
 
-✅ FastAPI backend with modular routers
-✅ PostgreSQL schema with category-based indexing
-✅ CORS-enabled API for local React dev
-✅ Ingestion parser that scrapes all 1.4 K+ entries from public-apis
-✅ Dockerized services for easy setup
-🚧 (Coming soon) Natural-language → SQL query service (NL2SQL)
-🚧 (Coming soon) AI recommendations for similar APIs
+✅ **AI Agent**: Natural Language to SQL conversion using Gemini 2.0 Flash.\
+✅ **Modern UI**: Dark theme, glassmorphism, and responsive design.\
+✅ **FastAPI Backend**: Modular and fast python backend.\
+✅ **PostgreSQL**: Robust relational database with category-based indexing.\
+✅ **Ingestion**: Scrapes all 1.4 K+ entries from public-apis.\
+✅ **Dockerized**: Easy setup with hot-reloading for development.
 
 ---
 
 ## 🧪 Example Queries
 
-```
-GET /catalog/search?q=weather
-GET /catalog/search?category=Blockchain&https=true
-GET /catalog/search?auth=apiKey&cors=true
-```
+* "Show me free weather APIs"
+* "Find APIs for cryptocurrency with HTTPS support"
+* "List all authentication methods for music APIs"
 
 ---
 
@@ -152,7 +152,8 @@ GET /catalog/search?auth=apiKey&cors=true
 | Layer            | Technology                         |
 | ---------------- | ---------------------------------- |
 | Frontend         | React 19 + Vite + TypeScript       |
-| Backend          | FastAPI (Python 3.11)              |
+| Backend          | FastAPI (Python 3.11) + LiteLLM    |
+| AI Model         | Gemini 2.0 Flash                   |
 | Database         | PostgreSQL 15                      |
 | Ingestion        | Python (psycopg2, regex, requests) |
 | Containerization | Docker & Docker Compose            |
@@ -193,7 +194,10 @@ uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 
 ## 🧑‍💻 Contributors
 
-* **Sai Vignesh Naragoni** — Full-stack developer & system architect
+* **Sai Vignesh Naragoni** — AI Agent Developer
+* **Anirudh Manjesh** — Backend Developer
+* **Varshan Reddy Mallipeddi** — Docker and DB Ingestion
+* **Niharika Siddalingaswamy** — Frontend Developer
 * Open for pull requests and extensions (AI querying, category analytics, etc.)
 
 ---
@@ -205,13 +209,4 @@ The ingested data comes from the [Public APIs repository](https://github.com/pub
 
 ---
 
-## 🌟 Future Roadmap
-
-* [ ] Natural-language → SQL (LLM-based) query interface
-* [ ] Recommendation engine for similar APIs
-* [ ] Pagination, sorting, and API detail pages
-* [ ] Role-based admin dashboard
-* [ ] Automated ingestion sync (GitHub Actions)
-
----
 **Made with ❤️ using FastAPI, React, and PostgreSQL**

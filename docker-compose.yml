@@ -29,6 +29,8 @@ services:
       - postgres
     ports:
       - "8000:8000"
+    volumes:
+      - ./backend:/app
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 
   frontend:
@@ -40,7 +42,10 @@ services:
       - backend
     ports:
       - "5173:5173"
-    command: ["npm","run","dev","--","--host"]
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: [ "npm", "run", "dev", "--", "--host" ]
 
 volumes:
   pg_data:

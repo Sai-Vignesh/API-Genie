@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routers import catalog
+from app.routers import query
 
 app = FastAPI(title="API Genie")
 
@@ -17,4 +17,4 @@ def health():
     return {"ok": True}
 
 # mount catalog routes
-app.include_router(catalog.router, prefix="/catalog", tags=["catalog"])
+app.include_router(query.router, prefix="/query", tags=["query"])

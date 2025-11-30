@@ -10,5 +10,6 @@ dependencies = [
   "pydantic",
   "pgvector==0.2.5",
   "httpx",
-  "python-dotenv"
+  "python-dotenv",
+  "litellm"
 ]

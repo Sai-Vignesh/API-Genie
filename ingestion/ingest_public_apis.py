@@ -111,7 +111,7 @@ def parse_all_tables(md_text: str) -> List[Dict]:
                         "https_supported": _to_bool(https),
                         "cors_supported": _to_bool(cors),
                         "category": current_category,
-                        "pricing_tier": None,
+                        "pricing_tier": "Free",
                     })
                 i += 1
             continue  # don’t double-increment after table block
