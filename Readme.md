@@ -1,6 +1,7 @@
 # 🧙‍♂️ API Genie  
 **A unified catalog and natural-language interface for exploring public APIs**
 
+![API Genie Interface](docs/images/homepage.png)
 ---
 
 ## 📖 Overview
@@ -189,6 +190,22 @@ uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 | `NetworkError` / `CORS` in browser                              | Add `CORSMiddleware` in FastAPI (already included)                                                         |
 | `ON CONFLICT DO UPDATE command cannot affect row a second time` | Duplicate entries in ingestion → dedupe logic fixed                                                        |
 | `No entries parsed`                                             | Ensure you downloaded full `public_apis_README.md` (≈ 1,900 lines)                                         |
+
+---
+
+## 📚 User Manual
+
+For detailed instructions on how to use the application, including screenshots, please refer to the **[User Manual](USER_MANUAL.md)**.
+
+---
+
+## 💾 Database Dump
+
+To generate a dump of the database for the final report:
+
+```bash
+docker exec -t api_genie_pg pg_dump -U api_genie api_genie > api_genie_dump.sql
+```
 
 ---
 
