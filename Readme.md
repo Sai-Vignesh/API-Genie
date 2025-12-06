@@ -103,7 +103,7 @@ POSTGRES_HOST=localhost POSTGRES_PORT=5432 POSTGRES_PASSWORD=api_genie_pw \
 python ingest_public_apis.py --readme ingestion/public_apis_README.md
 ```
 
-This loads ~1.4 K APIs from the public-apis README into PostgreSQL.
+This loads ~1.4 K APIs from the [public-apis](https://github.com/public-apis/public-apis) README into PostgreSQL.
 
 ---
 
